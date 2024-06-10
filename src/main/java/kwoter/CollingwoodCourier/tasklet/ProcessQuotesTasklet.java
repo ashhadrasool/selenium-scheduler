@@ -15,8 +15,11 @@ import java.util.List;
 @Component
 public class ProcessQuotesTasklet implements Tasklet {
 
-    @Autowired
     private QuotesQueueRepository quotesQueueRepository;
+
+    public ProcessQuotesTasklet(QuotesQueueRepository quotesQueueRepository) {
+        this.quotesQueueRepository = quotesQueueRepository;
+    }
 
     private String processQuote(String request) {
         // Your processing logic here
@@ -37,9 +40,9 @@ public class ProcessQuotesTasklet implements Tasklet {
                 // Simulate processing
                 String response = processQuote(quote.getRequest());
                 quote.setResponse(response);
-                quote.setStatus(9); // Set to success
+                quote.setStatus(2); // Set to success
             } catch (Exception e) {
-                quote.setStatus(2); // Set to failed
+                quote.setStatus(3); // Set to failed
             }
 
             quotesQueueRepository.save(quote);
