@@ -119,7 +119,6 @@ public class Base {
         this.driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 
-        goHome();
         loginPage = new LoginPage(driver);
 
     }

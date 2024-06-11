@@ -18,23 +18,20 @@ public class ProcessQuotesTasklet implements Tasklet {
 
     private QuotesQueueRepository quotesQueueRepository;
 
-    private Automation automation;
-
     public ProcessQuotesTasklet(QuotesQueueRepository quotesQueueRepository, Automation automation) {
         this.quotesQueueRepository = quotesQueueRepository;
-        this.automation = automation;
-
-        this.automation.setUp();
     }
 
     private String processQuote(String request) {
-        // Your processing logic here
-        automation.runAutomation(request);
-        return "Processed: " + request;
+
+        Automation automation = new Automation();
+        automation.setUp();
+        String response = automation.runAutomation(request);
+        return response;
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         List<QuotesQueue> newQuotes = quotesQueueRepository.findByStatus(0);
 
@@ -48,9 +45,9 @@ public class ProcessQuotesTasklet implements Tasklet {
                 String response = processQuote(quote.getRequest());
 
                 quote.setResponse(response);
-//                quote.setStatus(2); // Set to success
+                quote.setStatus(2); // Set to success
             } catch (Exception e) {
-//                quote.setStatus(3); // Set to failed
+                quote.setStatus(3); // Set to failed
             }
 
             quotesQueueRepository.save(quote);

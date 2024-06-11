@@ -10,7 +10,11 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.*;
 
 public class Automation extends Base {
-    public void runAutomation(String json) {
+    public String runAutomation(String json) {
+
+        String response = "{}";
+
+        goHome();
 
         String queue = System.getProperty("queue");
         String domain = System.getProperty("domain");
@@ -107,7 +111,7 @@ public class Automation extends Base {
             proposerPage.setEmail(email);
             proposerPage.setOccupation(occupation.toUpperCase());
             proposerPage.setEmploymentStatus(employmentStatus);
-            proposerPage.setSecondaryOccupation(secondaryOccupation);
+//            proposerPage.setSecondaryOccupation(secondaryOccupation); //todo enable
             proposerPage.setDOBday(this.dateSplit(DOB).get("day"));
             proposerPage.setDOBmonth(this.dateSplit(DOB).get("month"));
             proposerPage.setDOByear(this.dateSplit(DOB).get("year"));
@@ -558,7 +562,7 @@ public class Automation extends Base {
             vehiclePage.setVehicleRegular(vehicleRegular);
             vehiclePage.setVehicleHaveSignage(vehicleHaveSignage);
             vehiclePage.setVehicleMaxValue(vehicleMaxValue);
-            vehiclePage.setVehiclevisitSites(vehicleVisitSites);
+//            vehiclePage.setVehiclevisitSites(vehicleVisitSites); //todo: ebable
             vehiclePage.setVehicleOutsideUK(vehicleOutsideUK);
 
             Thread.sleep(1000);
@@ -578,7 +582,7 @@ public class Automation extends Base {
             String insuranceProfNcd = insuranceData.getInsuranceProfNCD();
             String insuranceDateNcd = insuranceData.getInsuranceDateNCD();
 
-            insurancePage.setInsuranceInsurer(insuranceInsurer);
+//            insurancePage.setInsuranceInsurer(insuranceInsurer); //todo: enable
             insurancePage.setInsurancePolicyNo(insurancePolicyNo);
             insurancePage.setInsuranceRegistrationNo(insuranceRegistrationNo);
             insurancePage.setInsuranceExpiryDater(insuranceExpiryDate);
@@ -638,9 +642,11 @@ public class Automation extends Base {
                 System.out.println(quotePage.getErrors());
             }
         } catch (Exception e) {
+            e.printStackTrace();
             reportError(e.getMessage(), httpSchema, domain, queue);
             System.err.println("exception thrown: " + e.getMessage());
         }
+        return response;
     }
 
     private Map<String, String> dateSplit(String date) {
