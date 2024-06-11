@@ -1,10 +1,15 @@
 package kwoter.CollingwoodCourier.model;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClaimData {
+    @JsonProperty("ProposerClaimDescription")
     private String proposerClaimDescription;
-    private Date proposerClaimDate;
+
+    @JsonProperty("ProposerClaimDate")
+    private String proposerClaimDate;
+
+    @JsonProperty("ProposerClaimCost")
     private String proposerClaimCost;
 
     public String getProposerClaimDescription() {
@@ -15,11 +20,11 @@ public class ClaimData {
         this.proposerClaimDescription = proposerClaimDescription;
     }
 
-    public Date getProposerClaimDate() {
+    public String getProposerClaimDate() {
         return proposerClaimDate;
     }
 
-    public void setProposerClaimDate(Date proposerClaimDate) {
+    public void setProposerClaimDate(String proposerClaimDate) {
         this.proposerClaimDate = proposerClaimDate;
     }
 
@@ -30,7 +35,4 @@ public class ClaimData {
     public void setProposerClaimCost(String proposerClaimCost) {
         this.proposerClaimCost = proposerClaimCost;
     }
-
-    // Getters and setters
 }
-

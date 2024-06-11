@@ -17,7 +17,7 @@ public class JobScheduler {
     @Autowired
     private ProcessQuotesTasklet processQuotesTasklet;
 
-    @Scheduled(fixedRate = 60000) // Execute every 1 minute
+    @Scheduled(fixedRate = 10000) // Execute every 1 minute
     public void executeProcessQuotesTasklet() {
         try {
             // Create dummy StepContribution and ChunkContext

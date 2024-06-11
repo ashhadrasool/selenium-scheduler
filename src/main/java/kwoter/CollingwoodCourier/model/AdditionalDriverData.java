@@ -1,29 +1,70 @@
 package kwoter.CollingwoodCourier.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 import java.util.List;
 
 public class AdditionalDriverData {
+    @JsonProperty("DriverTitle")
     private String driverTitle;
+
+    @JsonProperty("DriverFirstName")
     private String driverFirstName;
+
+    @JsonProperty("DriverLastName")
     private String driverLastName;
+
+    @JsonProperty("DriverDob")
     private String driverDob;
+
+    @JsonProperty("DriverLicenseType")
     private String driverLicenseType;
+
+    @JsonProperty("DriverDrivingLicenseNo")
     private String driverDrivingLicenseNo;
+
+    @JsonProperty("DriverDateTestPassed")
     private String driverDateTestPassed;
+
+    @JsonProperty("DriverUkResidentFrom")
     private String driverUkResidentFrom;
+
+    @JsonProperty("DriverOccupation")
     private String driverOccupation;
+
+    @JsonProperty("DriverBusinessType")
     private String driverBusinessType;
+
+    @JsonProperty("DriverEmploymentStatus")
     private String driverEmploymentStatus;
+
+    @JsonProperty("DriverRelationship")
     private String driverRelationship;
+
+    @JsonProperty("DriverSecondaryOccupation")
     private String driverSecondaryOccupation;
+
+    @JsonProperty("HasDriverConditionDisqualified")
     private String hasDriverConditionDisqualified;
+
+    @JsonProperty("HasDriverDeclined")
     private String hasDriverDeclined;
+
+    @JsonProperty("HasDriverDisqualified")
     private String hasDriverDisqualified;
+
+    @JsonProperty("AdditionalDriverHasClaims")
     private String additionalDriverHasClaims;
-    private List<ClaimData> driverAdditionalClaims;
+
+    @JsonProperty("DriverAdditionalClaims")
+    private List<DriverClaimData> driverAdditionalClaims;
+
+    @JsonProperty("AdditionalDriverHasConvictions")
     private boolean additionalDriverHasConvictions;
-    private List<ConvictionData> driverAdditionalConvictions;
+
+    @JsonProperty("DriverAdditionalConvictions")
+    private List<DriverConvictionData> driverAdditionalConvictions;
 
     public String getDriverTitle() {
         return driverTitle;
@@ -161,11 +202,11 @@ public class AdditionalDriverData {
         this.additionalDriverHasClaims = additionalDriverHasClaims;
     }
 
-    public List<ClaimData> getDriverAdditionalClaims() {
+    public List<DriverClaimData> getDriverAdditionalClaims() {
         return driverAdditionalClaims;
     }
 
-    public void setDriverAdditionalClaims(List<ClaimData> driverAdditionalClaims) {
+    public void setDriverAdditionalClaims(List<DriverClaimData> driverAdditionalClaims) {
         this.driverAdditionalClaims = driverAdditionalClaims;
     }
 
@@ -177,11 +218,11 @@ public class AdditionalDriverData {
         this.additionalDriverHasConvictions = additionalDriverHasConvictions;
     }
 
-    public List<ConvictionData> getDriverAdditionalConvictions() {
+    public List<DriverConvictionData> getDriverAdditionalConvictions() {
         return driverAdditionalConvictions;
     }
 
-    public void setDriverAdditionalConvictions(List<ConvictionData> driverAdditionalConvictions) {
+    public void setDriverAdditionalConvictions(List<DriverConvictionData> driverAdditionalConvictions) {
         this.driverAdditionalConvictions = driverAdditionalConvictions;
     }
 }

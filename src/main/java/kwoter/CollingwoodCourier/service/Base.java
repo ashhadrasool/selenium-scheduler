@@ -32,43 +32,87 @@ public class Base {
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String POST_PATH = "/leads/storeQuoteData/";
 
+    public static String getBrowserVersion(String browserPath) {
+        String version = null;
+
+        // Command to retrieve browser version
+        String command = browserPath + " --version";
+
+        try {
+            // Execute the command
+            Process process = Runtime.getRuntime().exec(command);
+
+            // Read the output
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Assuming version information is in the first line
+                version = line;
+                break; // Stop after reading the first line
+            }
+
+            // Close the reader
+            reader.close();
+
+            // Wait for the process to terminate
+            process.waitFor();
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return version.trim().split(" ")[1];
+    }
 
     public void setUp()  {
-        WebDriverManager.chromedriver().setup();
+
+//        https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json
+
+        String browserPath = "/Applications/Chromium.app/Contents/MacOS/Chromium";
+        String browserVersion = getBrowserVersion(browserPath);
+        System.out.println("browserVersion: "+ browserVersion);
+
+        WebDriverManager.chromiumdriver().clearDriverCache();
+        WebDriverManager webDriverManager = WebDriverManager.chromedriver().browserVersion("116.0.5818.0");
+        webDriverManager.setup();
+
+        System.setProperty("webdriver.chrome.driver", webDriverManager.getDownloadedDriverPath());
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
+
+        options.setBinary(browserPath);
+//        options.addArguments("--remote-allow-origins=*");
+//        options.addArguments("--headless");
+//        options.addArguments("--no-sandbox");
 //options.setBinary("/var/www/Selenium/chrome/linux-123.0.6312.122/chrome-linux64/chrome");
 //        options.setBinary("/var/www/Selenium/chrome/linux-125.0.6422.141/chrome-linux64/chrome");
-        options.setBinary("/var/www/Selenium/chrome/linux-104.0.5112.102/chrome-linux64/chrome");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-renderer-backgrounding");
-        options.addArguments("--disable-background-timer-throttling");
-        options.addArguments("--disable-backgrounding-occluded-windows");
-        options.addArguments("--disable-client-side-phishing-detection");
-        options.addArguments("--disable-crash-reporter");
-        options.addArguments("--disable-oopr-debug-crash-dump");
-        options.addArguments("--no-crash-upload");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--disable-low-res-tiling");
-        options.addArguments("--log-level=3");
-        options.addArguments("--silent");
-
-        options.addArguments("--window-size=800x600");
-        options.addArguments("blink-settings=imagesEnabled=false");
-        options.addArguments("--disable-webgl");
-        options.addArguments("--mute-audio");
-        options.addArguments("--renderer-process-limit=2");
-        options.addArguments("--disable-site-isolation-trials");
-        options.addArguments("--disable-smooth-scrolling");
-        options.addArguments("--disable-features=TranslateUI,NotificationPresenterImpl,MediaSessionService");
-        options.addArguments("--single-process");
-        options.addArguments("--reduce-security-for-testing");
-        options.addArguments("--disable-background-networking");
-        options.addArguments("--disable-sync");
+//        options.setBinary("/var/www/Selenium/chrome/linux-104.0.5112.102/chrome-linux64/chrome");
+//        options.addArguments("--disable-dev-shm-usage");
+//        options.addArguments("--disable-renderer-backgrounding");
+//        options.addArguments("--disable-background-timer-throttling");
+//        options.addArguments("--disable-backgrounding-occluded-windows");
+//        options.addArguments("--disable-client-side-phishing-detection");
+//        options.addArguments("--disable-crash-reporter");
+//        options.addArguments("--disable-oopr-debug-crash-dump");
+//        options.addArguments("--no-crash-upload");
+//        options.addArguments("--disable-gpu");
+//        options.addArguments("--disable-extensions");
+//        options.addArguments("--disable-low-res-tiling");
+//        options.addArguments("--log-level=3");
+//        options.addArguments("--silent");
+//
+//        options.addArguments("--window-size=800x600");
+//        options.addArguments("blink-settings=imagesEnabled=false");
+//        options.addArguments("--disable-webgl");
+//        options.addArguments("--mute-audio");
+//        options.addArguments("--renderer-process-limit=2");
+//        options.addArguments("--disable-site-isolation-trials");
+//        options.addArguments("--disable-smooth-scrolling");
+//        options.addArguments("--disable-features=TranslateUI,NotificationPresenterImpl,MediaSessionService");
+//        options.addArguments("--single-process");
+//        options.addArguments("--reduce-security-for-testing");
+//        options.addArguments("--disable-background-networking");
+//        options.addArguments("--disable-sync");
 
         this.driver = new ChromeDriver(options);
 
@@ -159,36 +203,38 @@ public class Base {
     }*/
 
 
-    protected static void reportError(String error, String schema, String domain, String queue_id) throws IOException {
+    protected static void reportError(String error, String schema, String domain, String queue_id) {
+        try {
+            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+            //urlParameters.add(new BasicNameValuePair("error", error));
+            urlParameters.add(new BasicNameValuePair("error", URLEncoder.encode(error, StandardCharsets.UTF_8)));
+            urlParameters.add(new BasicNameValuePair("quote", queue_id));
 
+            String GET_URL = compileGetUrl(schema, domain, POST_PATH, urlParameters);
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(GET_URL);
+            httpGet.addHeader("User-Agent", USER_AGENT);
+            CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
 
-        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-        //urlParameters.add(new BasicNameValuePair("error", error));
-        urlParameters.add(new BasicNameValuePair("error", URLEncoder.encode(error, StandardCharsets.UTF_8)));
-        urlParameters.add(new BasicNameValuePair("quote", queue_id));
+            System.out.println("GET Response Status:: " + httpResponse.getStatusLine().getStatusCode());
 
-        String GET_URL = compileGetUrl(schema, domain, POST_PATH, urlParameters);
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet(GET_URL);
-        httpGet.addHeader("User-Agent", USER_AGENT);
-        CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    httpResponse.getEntity().getContent()));
 
-        System.out.println("GET Response Status:: " + httpResponse.getStatusLine().getStatusCode());
+            String inputLine;
+            StringBuffer response = new StringBuffer();
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                httpResponse.getEntity().getContent()));
+            while ((inputLine = reader.readLine()) != null) {
+                response.append(inputLine);
+            }
+            reader.close();
 
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = reader.readLine()) != null) {
-            response.append(inputLine);
+            // print result
+            System.out.println(response.toString());
+            httpClient.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        reader.close();
-
-        // print result
-        System.out.println(response.toString());
-        httpClient.close();
     }
 
     protected static void reportResults(List<NameValuePair> results, String schema, String domain) throws IOException {

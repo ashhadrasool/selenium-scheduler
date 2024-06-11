@@ -2,6 +2,7 @@ package kwoter.CollingwoodCourier.tasklet;
 
 import kwoter.CollingwoodCourier.QuotesQueue;
 import kwoter.CollingwoodCourier.repo.QuotesQueueRepository;
+import kwoter.CollingwoodCourier.service.Automation;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -17,12 +18,18 @@ public class ProcessQuotesTasklet implements Tasklet {
 
     private QuotesQueueRepository quotesQueueRepository;
 
-    public ProcessQuotesTasklet(QuotesQueueRepository quotesQueueRepository) {
+    private Automation automation;
+
+    public ProcessQuotesTasklet(QuotesQueueRepository quotesQueueRepository, Automation automation) {
         this.quotesQueueRepository = quotesQueueRepository;
+        this.automation = automation;
+
+        this.automation.setUp();
     }
 
     private String processQuote(String request) {
         // Your processing logic here
+        automation.runAutomation(request);
         return "Processed: " + request;
     }
 
@@ -39,10 +46,11 @@ public class ProcessQuotesTasklet implements Tasklet {
             try {
                 // Simulate processing
                 String response = processQuote(quote.getRequest());
+
                 quote.setResponse(response);
-                quote.setStatus(2); // Set to success
+//                quote.setStatus(2); // Set to success
             } catch (Exception e) {
-                quote.setStatus(3); // Set to failed
+//                quote.setStatus(3); // Set to failed
             }
 
             quotesQueueRepository.save(quote);

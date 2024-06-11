@@ -2,23 +2,23 @@ package kwoter.CollingwoodCourier.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ConvictionData {
-    @JsonProperty("ProposerConvictionCode")
+public class DriverConvictionData {
+    @JsonProperty("DriverConvictionCode")
     private String convictionCode;
 
-    @JsonProperty("ProposerConvictionDate")
+    @JsonProperty("DriverConvictionDate")
     private String convictionDate;
 
-    @JsonProperty("ProposerConvictionPenalty")
+    @JsonProperty("DriverConvictionPenalty")
     private String convictionPenalty;
 
-    @JsonProperty("ProposerConvictionMonthBan")
+    @JsonProperty("DriverConvictionMonthBan")
     private String convictionMonthBan;
 
-    @JsonProperty("ProposerConvictionPending")
+    @JsonProperty("DriverConvictionPending")
     private boolean convictionPending;
 
-    @JsonProperty("ProposerConvictionFineAmount")
+    @JsonProperty("DriverConvictionFineAmount")
     private String convictionFineAmount;
 
     public String getConvictionCode() {

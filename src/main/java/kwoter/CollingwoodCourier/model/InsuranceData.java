@@ -1,75 +1,203 @@
 package kwoter.CollingwoodCourier.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 import java.util.List;
 
 public class InsuranceData {
 
+    @JsonProperty("Username")
     private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String dob;
-    private String policyHolder;
-    private String companyName;
-    private String companyRegistrationNumber;
-    private String coverType;
-    private String classOfUse;
-    private String businessType;
-    private String telephoneNumber;
-    private String mobileNumber;
-    private String email;
-    private String occupation;
-    private String employmentStatus;
-    private String secondaryOccupation;
-    private String vatRegistration;
-    private String isSetProposerPermanentAddress;
-    private String proposerBuildingNumber;
-    private String proposerPostcode;
-    private String title;
-    private String address1;
-    private String address2;
-    private String town;
-    private String county;
-    private String postcode;
-    private String proposerLicenseType;
-    private String proposerDrivingLicenseNo;
-    private String proposerDateTestPassed;
-    private String proposerUkResidentFrom;
-    private String hasProposerConditionDisqualified;
-    private String hasProposerDeclined;
-    private String hasProposerDisqualified;
-    private boolean hasProposerClaims;
-    private List<ClaimData> proposerAdditionalClaims;
-    private boolean hasProposerConvictions;
-    private List<ConvictionData> proposerAdditionalConvictions;
-    private Boolean hasAdditionalDrivers;
-    private List<AdditionalDriverData> additionalDrivers;
-    private String vehicleRegistration;
-    private String vehicleOvernightGaraging;
-    private String vehicleCarriageBasic;
-    private String vehicleWorkRadius;
-    private String vehicleHazardous;
-    private String vehicleValue;
-    private String vehicleModified;
-    private String vehicleGaragingPostcode;
-    private String vehicleDrops;
-    private String vehicleRegular;
-    private String vehicleHaveSignage;
-    private String vehicleMaxValue;
-    private String vehicleVisitSites;
-    private String vehicleOutsideUK;
-    private String insuranceInsurer;
-    private String insurancePolicyNo;
-    private String insuranceRegistrationNo;
-    private String insuranceExpiryDate;
-    private String insuranceNCD;
-    private String insuranceProfNCD;
-    private String insuranceDateNCD;
-    private String quoteStartDate;
-    private String quoteStartTime;
-    private String quotePolicyDuration;
 
+    @JsonProperty("Password")
+    private String password;
+
+    @JsonProperty("FirstName")
+    private String firstName;
+
+    @JsonProperty("LastName")
+    private String lastName;
+
+    @JsonProperty("Dob")
+    private String dob;
+
+    @JsonProperty("PolicyHolder")
+    private String policyHolder;
+
+    @JsonProperty("CompanyName")
+    private String companyName;
+
+    @JsonProperty("CompanyRegistrationNumber")
+    private String companyRegistrationNumber;
+
+    @JsonProperty("CoverType")
+    private String coverType;
+
+    @JsonProperty("ClassOfUse")
+    private String classOfUse;
+
+    @JsonProperty("BusinessType")
+    private String businessType;
+
+    @JsonProperty("telephonenumber")
+    private String telephoneNumber;
+
+    @JsonProperty("mobilenumber")
+    private String mobileNumber;
+
+    @JsonProperty("email")
+    private String email;
+
+    @JsonProperty("Occupation")
+    private String occupation;
+
+    @JsonProperty("EmploymentStatus")
+    private String employmentStatus;
+
+    @JsonProperty("SecondaryOccupation")
+    private String secondaryOccupation;
+
+    @JsonProperty("VatRegistration")
+    private String vatRegistration;
+
+    @JsonProperty("IsSetProposerPermanentAddress")
+    private String isSetProposerPermanentAddress;
+
+    @JsonProperty("ProposerBuildingNumber")
+    private String proposerBuildingNumber;
+
+    @JsonProperty("ProposerPostcode")
+    private String proposerPostcode;
+
+    @JsonProperty("Title")
+    private String title;
+
+    @JsonProperty("Address1")
+    private String address1;
+
+    @JsonProperty("Address2")
+    private String address2;
+
+    @JsonProperty("Town")
+    private String town;
+
+    @JsonProperty("County")
+    private String county;
+
+    @JsonProperty("Postcode")
+    private String postcode;
+
+    @JsonProperty("ProposerLicenseType")
+    private String proposerLicenseType;
+
+    @JsonProperty("ProposerDrivingLicenseNo")
+    private String proposerDrivingLicenseNo;
+
+    @JsonProperty("ProposerDateTestPassed")
+    private String proposerDateTestPassed;
+
+    @JsonProperty("ProposerUkResidentFrom")
+    private String proposerUkResidentFrom;
+
+    @JsonProperty("HasProposerConditionDisqualified")
+    private String hasProposerConditionDisqualified;
+
+    @JsonProperty("HasProposerDeclined")
+    private String hasProposerDeclined;
+
+    @JsonProperty("HasProposerDisqualified")
+    private String hasProposerDisqualified;
+
+    @JsonProperty("HasProposerClaims")
+    private boolean hasProposerClaims;
+
+    @JsonProperty("ProposerAdditionalClaims")
+    private List<ClaimData> proposerAdditionalClaims;
+
+    @JsonProperty("HasProposerConvictions")
+    private boolean hasProposerConvictions;
+
+    @JsonProperty("ProposerAdditionalConvictions")
+    private List<ConvictionData> proposerAdditionalConvictions;
+
+    @JsonProperty("hasAdditionalDrivers")
+    private Boolean hasAdditionalDrivers;
+
+    @JsonProperty("AdditionalDrivers")
+    private List<AdditionalDriverData> additionalDrivers;
+
+    @JsonProperty("VehicleRegistration")
+    private String vehicleRegistration;
+
+    @JsonProperty("VehicleOvernightGaraging")
+    private String vehicleOvernightGaraging;
+
+    @JsonProperty("VehicleCarriageBasic")
+    private String vehicleCarriageBasic;
+
+    @JsonProperty("VehicleWorkRadius")
+    private String vehicleWorkRadius;
+
+    @JsonProperty("VehicleHazardous")
+    private String vehicleHazardous;
+
+    @JsonProperty("VehicleValue")
+    private String vehicleValue;
+
+    @JsonProperty("VehicleModified")
+    private String vehicleModified;
+
+    @JsonProperty("VehicleGaragingPostcode")
+    private String vehicleGaragingPostcode;
+
+    @JsonProperty("VehicleDrops")
+    private String vehicleDrops;
+
+    @JsonProperty("VehicleRegular")
+    private String vehicleRegular;
+
+    @JsonProperty("VehicleHaveSignage")
+    private String vehicleHaveSignage;
+
+    @JsonProperty("VehicleMaxValue")
+    private String vehicleMaxValue;
+
+    @JsonProperty("VehicleVisitSites")
+    private String vehicleVisitSites;
+
+    @JsonProperty("VehicleOutsideUK")
+    private String vehicleOutsideUK;
+
+    @JsonProperty("InsuranceInsurer")
+    private String insuranceInsurer;
+
+    @JsonProperty("InsurancePolicyNo")
+    private String insurancePolicyNo;
+
+    @JsonProperty("InsuranceRegistrationNo")
+    private String insuranceRegistrationNo;
+
+    @JsonProperty("InsuranceExpiryDate")
+    private String insuranceExpiryDate;
+
+    @JsonProperty("InsuranceNCD")
+    private String insuranceNCD;
+
+    @JsonProperty("InsuranceProfNCD")
+    private String insuranceProfNCD;
+
+    @JsonProperty("InsuranceDateNCD")
+    private String insuranceDateNCD;
+
+    @JsonProperty("QuoteStartDate")
+    private String quoteStartDate;
+
+    @JsonProperty("QuoteStartTime")
+    private String quoteStartTime;
+
+    @JsonProperty("QuotePolicyDuration")
+    private String quotePolicyDuration;
     public String getUsername() {
         return username;
     }

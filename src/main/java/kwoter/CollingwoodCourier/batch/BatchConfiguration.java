@@ -1,6 +1,7 @@
 package kwoter.CollingwoodCourier.batch;
 
 import kwoter.CollingwoodCourier.repo.QuotesQueueRepository;
+import kwoter.CollingwoodCourier.service.Automation;
 import kwoter.CollingwoodCourier.tasklet.ProcessQuotesTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -24,8 +25,8 @@ public class BatchConfiguration {
     @Bean
     public TaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(5);
+        executor.setCorePoolSize(1);
+        executor.setMaxPoolSize(1);
         executor.setQueueCapacity(10);
         executor.setThreadNamePrefix("batch_thread-");
         executor.initialize();
@@ -53,5 +54,10 @@ public class BatchConfiguration {
         jobLauncher.setTaskExecutor(taskExecutor());
         jobLauncher.afterPropertiesSet();
         return jobLauncher;
+    }
+
+    @Bean
+    public Automation getAutomation(){
+        return new Automation();
     }
 }
