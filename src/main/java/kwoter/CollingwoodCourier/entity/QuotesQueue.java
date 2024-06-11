@@ -1,4 +1,4 @@
-package kwoter.CollingwoodCourier;
+package kwoter.CollingwoodCourier.entity;
 
 import jakarta.persistence.*;
 

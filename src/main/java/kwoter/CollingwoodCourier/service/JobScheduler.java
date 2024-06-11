@@ -1,31 +1,55 @@
 package kwoter.CollingwoodCourier.service;
 
-import kwoter.CollingwoodCourier.tasklet.ProcessQuotesTasklet;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.scope.context.ChunkContext;
+import kwoter.CollingwoodCourier.entity.QuotesQueue;
+import kwoter.CollingwoodCourier.repo.QuotesQueueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
-@EnableScheduling
 public class JobScheduler {
 
     @Autowired
-    private ProcessQuotesTasklet processQuotesTasklet;
+    QuotesQueueRepository quotesQueueRepository;
 
-    @Scheduled(fixedRate = 120000) // Execute every 1 minute
-    public void executeProcessQuotesTasklet() {
+    @Autowired
+    ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+    public void process() {
         try {
-            // Create dummy StepContribution and ChunkContext
-            StepContribution contribution = new StepContribution(new StepExecution("dummyStep", new JobExecution(123L), 456L));
-            ChunkContext chunkContext = new ChunkContext(null);
-            processQuotesTasklet.execute(contribution, chunkContext);
+            List<QuotesQueue> pendingQuotes = quotesQueueRepository.findTop5ByStatusOrderById(0);
+
+            List<QuotesQueue> inProgressQuotes = pendingQuotes.stream().map((quotesQueue) -> {
+                quotesQueue.setStatus(1);
+                return quotesQueue;
+            }).collect(Collectors.toList());
+
+            inProgressQuotes = quotesQueueRepository.saveAll(inProgressQuotes);
+
+            for (QuotesQueue quote : inProgressQuotes) {
+                threadPoolTaskExecutor.submit(() -> {
+                    Automation automation = new Automation();
+                    try {
+                        automation.setUp();
+                        String response = automation.runAutomation(quote.getRequest());
+                        quote.setResponse(response);
+                        quote.setStatus(2); // Set to success
+                    } catch (Exception e) {
+                        quote.setStatus(3); // Set to failed
+                    }finally {
+                        quotesQueueRepository.save(quote);
+                        automation.tearDown();
+                    }
+                });
+                System.out.println("hi");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }
