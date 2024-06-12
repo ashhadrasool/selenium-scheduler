@@ -31,6 +31,7 @@ public class JobScheduler {
 
             for (QuotesQueue quote : inProgressQuotes) {
                 threadPoolTaskExecutor.submit(() -> {
+                    System.out.println("Running Request Id: " +quote.getRequestId());
                     Automation automation = new Automation();
                     try {
                         automation.setUp();
@@ -40,6 +41,7 @@ public class JobScheduler {
                     } catch (Exception e) {
 //                        quote.setStatus(3); // Set to failed  //todo enable
                     }finally {
+                        System.out.println("Completed Request Id: " +quote.getRequestId());
                         quotesQueueRepository.save(quote);
                         automation.tearDown();
                     }
