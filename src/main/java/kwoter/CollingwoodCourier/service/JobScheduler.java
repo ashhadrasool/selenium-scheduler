@@ -23,7 +23,7 @@ public class JobScheduler {
             List<QuotesQueue> pendingQuotes = quotesQueueRepository.findTop5ByStatusOrderById(0);
 
             List<QuotesQueue> inProgressQuotes = pendingQuotes.stream().map((quotesQueue) -> {
-                quotesQueue.setStatus(1);
+//                quotesQueue.setStatus(1); //todo enable
                 return quotesQueue;
             }).collect(Collectors.toList());
 
@@ -35,10 +35,10 @@ public class JobScheduler {
                     try {
                         automation.setUp();
                         String response = automation.runAutomation(quote.getRequest());
-                        quote.setResponse(response);
-                        quote.setStatus(2); // Set to success
+//                        quote.setResponse(response); //todo enable
+//                        quote.setStatus(2); // Set to success //todo enable
                     } catch (Exception e) {
-                        quote.setStatus(3); // Set to failed
+//                        quote.setStatus(3); // Set to failed  //todo enable
                     }finally {
                         quotesQueueRepository.save(quote);
                         automation.tearDown();
