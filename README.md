@@ -1,41 +1,73 @@
 
-SETUP:
-install JDK
-sudo apt install openjdk-17-jre
+## Deployment Guide on VM
 
-Set java home
+### Set Java JDK
+To install the Java Development Kit (JDK), run the following command:
+```sh
+sudo apt install openjdk-17-jre
+```
+To set java in path and set java home:
+For permanently changing, add to ~/.bash_profile
+```
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
+```
+
+
+### Set Chrome Browser
+Install unzip for extracting the file to be downloaded
+```
 sudo apt-get install unzip
+```
 
-
-set the version that's required in a variable
+Set the version of browser that's required in a variable
+```
 VERSION="127.0.6532.0"
-
-download the zip file
+```
+Download the zip file
+```
 wget "https://storage.googleapis.com/chrome-for-testing-public/${VERSION}/linux64/chrome-headless-shell-linux64.zip"
-
-make all missing parent directories to extract the zip file
+```
+Make all missing parent directories to extract the zip file
+```
 mkdir -p bin/chrome/linux-${VERSION}/chrome-linux64
-
+```
 extracting the zip file
+```
 unzip chrome-headless-shell-linux64.zip -d ~/bin/chrome/linux-${VERSION}/chrome-linux64
+```
 
+### Set Environment Variables
 write a shell script for setting up env variables
+```
 nano set_env_variables.sh
+```
 
-provide access to the file
+Provide access to the file
+```
 chmod +x set_env_variables.sh
+```
 
+### Building JAR from service
+Run the command to generate a JAR file in target as CollingwoodCourier-x.x.x-SNAPSHOT.jar
+```
+mvn clean package -DskipTests
+```
 
-COPYING JAR to VM:
-for copying the jar from current machine to the server VM
+### Copy JAR to VM:
+For copying the jar from current machine to the server VM
+```
 scp /Users/ashhad/projects/CollingwoodCourier/target/CollingwoodCourier-0.0.1-SNAPSHOT.jar root@165.22.122.93:/root/
+```
 
-RUN:
-run the shell file to load the env variables. Only required when variables need to be updated from the file
+### RUN Java Service:
+Run the shell file to load the env variables. Only required when variables need to be updated from the file
+```
 source set_env_variables.sh
+```
 
 The command to run the java service
+```
 java -jar CollingwoodCourier-0.0.1-SNAPSHOT.jar
+```
 
