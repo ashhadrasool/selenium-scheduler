@@ -1,6 +1,5 @@
 package kwoter.CollingwoodCourier;
 
-import kwoter.CollingwoodCourier.repo.QuotesQueueRepository;
 import kwoter.CollingwoodCourier.service.JobScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;

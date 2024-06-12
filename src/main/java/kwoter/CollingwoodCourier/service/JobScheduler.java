@@ -44,9 +44,7 @@ public class JobScheduler {
                         automation.tearDown();
                     }
                 });
-                System.out.println("hi");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

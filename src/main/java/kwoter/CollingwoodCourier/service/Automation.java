@@ -701,52 +701,17 @@ public class Automation {
         return dateMap;
     }
 
-
-
-
-    public static String getBrowserVersion(String browserPath) {
-        String version = null;
-        String command = browserPath + " --version";
-
-        try {
-            Process process = Runtime.getRuntime().exec(command);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                version = line;
-                break;
-            }
-            reader.close();
-            process.waitFor();
-            return version.trim().split(" ")[1];
-
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return "";
-    }
-
-    public void setUp()  {
-
-//        https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json
-
-        browserPath = System.getProperty("browser-path");
-        String browserVersion = getBrowserVersion(browserPath);
-        System.out.println("browserVersion: "+ browserVersion);
-
-//        WebDriverManager.chromiumdriver().clearDriverCache();
-
-        WebDriverManager webDriverManager = WebDriverManager.chromedriver().browserVersion("116.0.5818.0");
-        webDriverManager.setup();
-
-        System.setProperty("webdriver.chrome.driver", webDriverManager.getDownloadedDriverPath());
+    public void setUp() throws IOException {
+        browserPath = System.getenv("browser.path");
+        boolean isHeadless = Boolean.parseBoolean(System.getenv("browser.headless"));
 
         ChromeOptions options = new ChromeOptions();
 
         options.setBinary(browserPath);
-//        options.addArguments("--remote-allow-origins=*");
-//        options.addArguments("--headless");
+        if(isHeadless){
+            options.addArguments("--headless");
+        }
+        options.addArguments("--remote-allow-origins=*");
 //        options.addArguments("--no-sandbox");
 //options.setBinary("/var/www/Selenium/chrome/linux-123.0.6312.122/chrome-linux64/chrome");
 //        options.setBinary("/var/www/Selenium/chrome/linux-125.0.6422.141/chrome-linux64/chrome");
