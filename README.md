@@ -18,6 +18,12 @@ export PATH=$JAVA_HOME/bin:$PATH
 Install unzip for extracting the file to be downloaded
 ```
 sudo apt-get install unzip
+sudo apt-get install -y libgbm-dev
+```
+
+Browser may require libgbm-dev library so install that too
+```
+sudo apt-get install -y libgbm-dev
 ```
 
 Set the version of browser that's required in a variable
@@ -26,7 +32,7 @@ VERSION="127.0.6532.0"
 ```
 Download the zip file
 ```
-wget "https://storage.googleapis.com/chrome-for-testing-public/${VERSION}/linux64/chrome-headless-shell-linux64.zip"
+wget "https://storage.googleapis.com/chrome-for-testing-public/${VERSION}/linux64/chrome-linux64.zip"
 ```
 Make all missing parent directories to extract the zip file
 ```
@@ -34,7 +40,7 @@ mkdir -p bin/chrome/linux-${VERSION}/chrome-linux64
 ```
 extracting the zip file
 ```
-unzip chrome-headless-shell-linux64.zip -d ~/bin/chrome/linux-${VERSION}/chrome-linux64
+unzip chrome-linux64.zip -d ~/bin/chrome/linux-${VERSION}/chrome-linux64
 ```
 
 ### Set Environment Variables

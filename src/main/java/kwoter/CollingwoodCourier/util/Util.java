@@ -126,7 +126,8 @@ public class Util {
             }
             reader.close();
             process.waitFor();
-            return version.trim().split(" ")[1];
+            String[] chunks = version.trim().split(" ");
+            return chunks[chunks.length-1];
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
