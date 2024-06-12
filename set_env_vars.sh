@@ -12,6 +12,7 @@ export EXECUTOR_SERVICE_QUEUE_CAPACITY=10
 
 # Task scheduler configuration
 export TASK_SCHEDULER_POOL_SIZE=1
+export TASK_SCHEDULER_TIME_IN_SECONDS=30
 
 export BROWSER_PATH=/root/bin/chrome/linux-127.0.6532.0/chrome-linux64/chrome-headless-shell-linux64/chrome-headless-shell
 export HEADLESS=true

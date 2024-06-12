@@ -72,8 +72,6 @@ public class Config {
         webDriverManager.setup();
 
         System.setProperty("webdriver.chrome.driver", webDriverManager.getDownloadedDriverPath());
-
-        System.setProperty("browser-path", browserPath);
     }
 
 }

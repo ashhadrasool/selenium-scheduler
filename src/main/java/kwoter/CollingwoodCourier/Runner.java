@@ -2,6 +2,7 @@ package kwoter.CollingwoodCourier;
 
 import kwoter.CollingwoodCourier.service.JobScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -16,13 +17,15 @@ public class Runner implements ApplicationRunner {
     ThreadPoolTaskScheduler threadPoolTaskScheduler;
     @Autowired
     JobScheduler jobScheduler;
+    @Value("${task-scheduler.time-in-seconds}")
+    private int scheduleAfterTimeInMinutes;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
         threadPoolTaskScheduler.scheduleAtFixedRate(
                 () -> jobScheduler.process(),
-                Duration.ofMinutes(1)
+                Duration.ofSeconds(scheduleAfterTimeInMinutes)
         );
     }
 }
