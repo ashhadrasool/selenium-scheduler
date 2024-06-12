@@ -18,6 +18,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,6 +38,8 @@ public class Automation {
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String POST_PATH = "/leads/storeQuoteData/";
     private String browserPath;
+
+    private static final Logger logger = LoggerFactory.getLogger(Automation.class);
     public String runAutomation(String json) {
 
         String response = "{}";
@@ -702,6 +706,7 @@ public class Automation {
     }
 
     public void setUp() throws IOException {
+
         browserPath = System.getenv("browser.path");
         boolean isHeadless = Boolean.parseBoolean(System.getenv("browser.headless"));
 
