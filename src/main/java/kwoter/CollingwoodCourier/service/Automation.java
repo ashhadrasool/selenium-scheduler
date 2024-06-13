@@ -754,7 +754,10 @@ public class Automation {
 
     public void setUp() throws IOException {
 
-        browserPath = System.getenv("browser.path");
+        System.out.println("Driver Path: "+System.getProperty("webdriver.chrome.driver"));
+        System.out.println("Browser Path: "+System.getProperty("browser.path"));
+
+        browserPath = System.getProperty("browser.path");
         boolean isHeadless = Boolean.parseBoolean(System.getenv("browser.headless"));
 
         ChromeOptions options = new ChromeOptions();
@@ -764,24 +767,21 @@ public class Automation {
             options.addArguments("--headless");
         }
         options.addArguments("--remote-allow-origins=*");
-//        options.addArguments("--no-sandbox");
-//options.setBinary("/var/www/Selenium/chrome/linux-123.0.6312.122/chrome-linux64/chrome");
-//        options.setBinary("/var/www/Selenium/chrome/linux-125.0.6422.141/chrome-linux64/chrome");
-//        options.setBinary("/var/www/Selenium/chrome/linux-104.0.5112.102/chrome-linux64/chrome");
-//        options.addArguments("--disable-dev-shm-usage");
-//        options.addArguments("--disable-renderer-backgrounding");
-//        options.addArguments("--disable-background-timer-throttling");
-//        options.addArguments("--disable-backgrounding-occluded-windows");
-//        options.addArguments("--disable-client-side-phishing-detection");
-//        options.addArguments("--disable-crash-reporter");
-//        options.addArguments("--disable-oopr-debug-crash-dump");
-//        options.addArguments("--no-crash-upload");
-//        options.addArguments("--disable-gpu");
-//        options.addArguments("--disable-extensions");
-//        options.addArguments("--disable-low-res-tiling");
-//        options.addArguments("--log-level=3");
-//        options.addArguments("--silent");
-//
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-renderer-backgrounding");
+        options.addArguments("--disable-background-timer-throttling");
+        options.addArguments("--disable-backgrounding-occluded-windows");
+        options.addArguments("--disable-client-side-phishing-detection");
+        options.addArguments("--disable-crash-reporter");
+        options.addArguments("--disable-oopr-debug-crash-dump");
+        options.addArguments("--no-crash-upload");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--disable-low-res-tiling");
+        options.addArguments("--log-level=3");
+        options.addArguments("--silent");
+
 //        options.addArguments("--window-size=800x600");
 //        options.addArguments("blink-settings=imagesEnabled=false");
 //        options.addArguments("--disable-webgl");

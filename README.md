@@ -28,7 +28,7 @@ sudo apt-get install -y libgbm-dev
 
 Set the version of browser that's required in a variable
 ```
-VERSION="127.0.6532.0"
+VERSION="125.0.6422.141"
 ```
 Download the zip file
 ```
@@ -40,7 +40,7 @@ mkdir -p bin/chrome/linux-${VERSION}/chrome-linux64
 ```
 extracting the zip file
 ```
-unzip chrome-linux64.zip -d ~/bin/chrome/linux-${VERSION}/chrome-linux64
+unzip chrome-linux64.zip -d ~/bin/chrome/linux-${VERSION}
 ```
 
 ### Set Environment Variables

@@ -94,6 +94,8 @@ public class JobScheduler {
                         requestLog.setSuccess(Boolean.TRUE);
 
                     } catch (Exception e) {
+                        e.printStackTrace();
+
                         String jsonOutput = "{}}";
                         try {
                             jsonOutput = (new ObjectMapper()).writeValueAsString(automationResponse.getErrorDetails());
