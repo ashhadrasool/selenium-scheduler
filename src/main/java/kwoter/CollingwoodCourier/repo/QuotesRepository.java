@@ -9,6 +9,5 @@ import java.util.Optional;
 
 public interface QuotesRepository extends JpaRepository<Quotes, Integer> {
     List<Quotes> findAll();
-    Optional<Quotes> findById(Integer id);
     Optional<Quotes> findByRequestId(Integer id);
 }
