@@ -3,6 +3,7 @@ package kwoter.CollingwoodCourier.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kwoter.CollingwoodCourier.entity.Quotes;
 import kwoter.CollingwoodCourier.entity.QuotesQueue;
+import kwoter.CollingwoodCourier.entity.RequestLog;
 import kwoter.CollingwoodCourier.entity.RequestLogData;
 import kwoter.CollingwoodCourier.enums.QuotesQueueStatusEnum;
 import kwoter.CollingwoodCourier.enums.QuotesStatusEnum;
@@ -10,6 +11,7 @@ import kwoter.CollingwoodCourier.model.QuoteDetails;
 import kwoter.CollingwoodCourier.repo.QuotesQueueRepository;
 import kwoter.CollingwoodCourier.repo.QuotesRepository;
 import kwoter.CollingwoodCourier.repo.RequestLogDataRepository;
+import kwoter.CollingwoodCourier.repo.RequestLogRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class JobScheduler {
 
     @Autowired
     RequestLogDataRepository requestLogDataRepository;
+
+    @Autowired
+    RequestLogRepository requestLogRepository;
 
     @Autowired
     ThreadPoolTaskExecutor threadPoolTaskExecutor;
@@ -55,6 +60,7 @@ public class JobScheduler {
                 threadPoolTaskExecutor.submit(() -> {
                     Quotes quotes = quotesRepository.findByRequestId(quotesQueue.getRequestId()).orElse(null);
                     RequestLogData requestLogData = requestLogDataRepository.findByRequestLogId(quotesQueue.getRequestId()).orElse(null);
+                    RequestLog requestLog = requestLogRepository.findById(quotesQueue.getRequestId()).orElse(null);
                     System.out.println("Running Request Id: " +quotesQueue.getRequestId());
                     Automation automation = new Automation();
                     try {
@@ -77,14 +83,19 @@ public class JobScheduler {
                         quotes.setExcess(Double.parseDouble(quoteDetails.getTotal()));
                         quotes.setQuoteId(quoteDetails.getQuoteNumber());
 
+                        requestLog.setSuccess(Boolean.TRUE);
+
                     } catch (Exception e) {
                         quotesQueue.setStatus(QuotesQueueStatusEnum.FAIL.getCode()); // Set to failed  //todo enable
                         quotes.setStatus(QuotesStatusEnum.FAIL.getCode());
                         requestLogData.setErrorMessage(e.getMessage());
                     }finally {
+                        
                         quotesQueueRepository.save(quotesQueue);
                         quotesRepository.save(quotes);
                         requestLogDataRepository.save(requestLogData);
+                        requestLogRepository.save(requestLog);
+
                         logger.info("Completed Request Id: " +quotesQueue.getRequestId());
                         automation.tearDown();
                     }

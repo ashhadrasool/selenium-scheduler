@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface RequestLogDataRepository extends JpaRepository<RequestLogData, Integer> {
 
-    Optional<RequestLogData> findByRequestLogId(Integer aLong);
+    Optional<RequestLogData> findByRequestLogId(Integer id);
 }
