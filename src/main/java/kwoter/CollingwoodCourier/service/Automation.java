@@ -755,10 +755,12 @@ public class Automation {
     public void setUp() throws IOException {
 
         System.out.println("Driver Path: "+System.getProperty("webdriver.chrome.driver"));
-        System.out.println("Browser Path: "+System.getProperty("browser.path"));
 
-        browserPath = System.getProperty("browser.path");
-        boolean isHeadless = Boolean.parseBoolean(System.getenv("browser.headless"));
+        browserPath = System.getenv("BROWSER_PATH");
+        boolean isHeadless = Boolean.parseBoolean(System.getenv("HEADLESS"));
+        System.out.println("Browser Headless: "+isHeadless);
+        System.out.println("Browser Path: "+browserPath);
+
 
         ChromeOptions options = new ChromeOptions();
 

@@ -96,3 +96,8 @@ To kill the process
 kill -9 PROCESS_PID
 ```
 
+we can find and kill like this too
+
+```
+ps aux | grep 'java -jar ' | grep -v 'grep' | awk '{print $2}' | xargs kill -9
+```

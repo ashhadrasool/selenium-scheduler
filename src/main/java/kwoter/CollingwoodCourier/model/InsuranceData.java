@@ -40,13 +40,13 @@ public class InsuranceData {
     @JsonProperty("BusinessType")
     private String businessType;
 
-    @JsonProperty("telephonenumber")
+    @JsonProperty("TelephoneNumber")
     private String telephoneNumber;
 
-    @JsonProperty("mobilenumber")
+    @JsonProperty("MobileNumber")
     private String mobileNumber;
 
-    @JsonProperty("email")
+    @JsonProperty("Email")
     private String email;
 
     @JsonProperty("Occupation")
