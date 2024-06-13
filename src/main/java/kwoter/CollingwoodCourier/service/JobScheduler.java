@@ -1,5 +1,6 @@
 package kwoter.CollingwoodCourier.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kwoter.CollingwoodCourier.entity.Quotes;
 import kwoter.CollingwoodCourier.entity.QuotesQueue;
@@ -7,6 +8,7 @@ import kwoter.CollingwoodCourier.entity.RequestLog;
 import kwoter.CollingwoodCourier.entity.RequestLogData;
 import kwoter.CollingwoodCourier.enums.QuotesQueueStatusEnum;
 import kwoter.CollingwoodCourier.enums.QuotesStatusEnum;
+import kwoter.CollingwoodCourier.model.AutomationResponse;
 import kwoter.CollingwoodCourier.model.QuoteDetails;
 import kwoter.CollingwoodCourier.repo.QuotesQueueRepository;
 import kwoter.CollingwoodCourier.repo.QuotesRepository;
@@ -62,12 +64,18 @@ public class JobScheduler {
                     RequestLogData requestLogData = requestLogDataRepository.findByRequestLogId(quotesQueue.getRequestId()).orElse(null);
                     RequestLog requestLog = requestLogRepository.findById(quotesQueue.getRequestId()).orElse(null);
                     System.out.println("Running Request Id: " +quotesQueue.getRequestId());
+                    AutomationResponse automationResponse = new AutomationResponse();
                     Automation automation = new Automation();
                     try {
                         logger.info("Setting up browser for Request Id: "+quotesQueue.getRequestId());
                         automation.setUp();
                         logger.info("Running Automation for Request Id: "+quotesQueue.getRequestId());
-                        QuoteDetails quoteDetails = automation.runAutomation(quotesQueue.getRequest());
+                        automationResponse = automation.runAutomation(quotesQueue.getRequest());
+                        QuoteDetails quoteDetails = automationResponse.getQuoteDetails();
+
+                        if(automationResponse.getErrorDetails()!=null){
+                            throw new Exception();
+                        }
 
                         String jsonOutput = (new ObjectMapper()).writeValueAsString(quoteDetails);
 
@@ -86,7 +94,15 @@ public class JobScheduler {
                         requestLog.setSuccess(Boolean.TRUE);
 
                     } catch (Exception e) {
-                        quotesQueue.setStatus(QuotesQueueStatusEnum.FAIL.getCode()); // Set to failed  //todo enable
+                        String jsonOutput = "{}}";
+                        try {
+                            jsonOutput = (new ObjectMapper()).writeValueAsString(automationResponse.getErrorDetails());
+                        } catch (JsonProcessingException ex) {
+                        }
+
+                        requestLogData.setOutput(jsonOutput);
+                        quotesQueue.setResponse(jsonOutput);
+                        quotesQueue.setStatus(QuotesQueueStatusEnum.FAIL.getCode());
                         quotes.setStatus(QuotesStatusEnum.FAIL.getCode().shortValue());
                         requestLogData.setErrorMessage(e.getMessage());
                     }finally {

@@ -40,7 +40,9 @@ public class Automation {
     private String browserPath;
 
     private static final Logger logger = LoggerFactory.getLogger(Automation.class);
-    public QuoteDetails runAutomation(String json) {
+    public AutomationResponse runAutomation(String json) {
+
+        AutomationResponse automationResponse = new AutomationResponse();
 
         String response = "{}";
 
@@ -167,8 +169,11 @@ public class Automation {
             DriversPage driversPage = proposerPage.clickDriversPage();
 
             if (proposerPage.hasErrors()) {
-                reportError(proposerPage.getErrors(), httpSchema, domain, queue);
                 System.out.println(proposerPage.getErrors());
+                
+                ErrorDetails errorDetails = new ErrorDetails();
+                errorDetails.setMessage(proposerPage.getErrors());
+                automationResponse.setErrorDetails(errorDetails);
             }
 
             /**
@@ -255,8 +260,11 @@ public class Automation {
             Thread.sleep(1000);
             QuestionsPage questionsPage = driversPage.clickQuestionsPage();
             if (driversPage.hasErrors()) {
-                reportError(driversPage.getErrors(), httpSchema, domain, queue);
                 System.out.println(driversPage.getErrors());
+
+                ErrorDetails errorDetails = new ErrorDetails();
+                errorDetails.setMessage(driversPage.getErrors());
+                automationResponse.setErrorDetails(errorDetails);
             }
 
 
@@ -281,8 +289,11 @@ public class Automation {
             }
             AccidentPage accidentPage = questionsPage.clickAccidentPage();
             if (questionsPage.hasErrors()) {
-                reportError(questionsPage.getErrors(), httpSchema, domain, queue);
                 System.out.println(questionsPage.getErrors());
+
+                ErrorDetails errorDetails = new ErrorDetails();
+                errorDetails.setMessage(questionsPage.getErrors());
+                automationResponse.setErrorDetails(errorDetails);
             }
             /**
              * ACCIDENT/CONVICTION PAGE
@@ -322,8 +333,11 @@ public class Automation {
                     proposerAdditionalClaimsIndex++;
 
                     if (accidentPage.hasErrors()) {
-                        reportError(accidentPage.getErrors(), httpSchema, domain, queue);
                         System.out.println(accidentPage.getErrors());
+
+                        ErrorDetails errorDetails = new ErrorDetails();
+                        errorDetails.setMessage(accidentPage.getErrors());
+                        automationResponse.setErrorDetails(errorDetails);
                     }
                 }
             }
@@ -362,8 +376,11 @@ public class Automation {
                     accidentPage.clickSaveClaim();
 
                     if (accidentPage.hasErrors()) {
-                        reportError(accidentPage.getErrors(), httpSchema, domain, queue);
                         System.out.println(accidentPage.getErrors());
+
+                        ErrorDetails errorDetails = new ErrorDetails();
+                        errorDetails.setMessage(accidentPage.getErrors());
+                        automationResponse.setErrorDetails(errorDetails);
                     }
                 }
             }
@@ -401,8 +418,11 @@ public class Automation {
                     accidentPage.clickSaveClaim();
 
                     if (accidentPage.hasErrors()) {
-                        reportError(accidentPage.getErrors(), httpSchema, domain, queue);
                         System.out.println(accidentPage.getErrors());
+
+                        ErrorDetails errorDetails = new ErrorDetails();
+                        errorDetails.setMessage(accidentPage.getErrors());
+                        automationResponse.setErrorDetails(errorDetails);
                     }
                 }
             }
@@ -448,8 +468,11 @@ public class Automation {
                     accidentPage.clickSaveConviction();
 
                     if (accidentPage.hasErrors()) {
-                        reportError(accidentPage.getErrors(), httpSchema, domain, queue);
                         System.out.println(accidentPage.getErrors());
+
+                        ErrorDetails errorDetails = new ErrorDetails();
+                        errorDetails.setMessage(accidentPage.getErrors());
+                        automationResponse.setErrorDetails(errorDetails);
                     }
                 }
             }
@@ -493,8 +516,11 @@ public class Automation {
                     accidentPage.clickSaveConviction();
 
                     if (accidentPage.hasErrors()) {
-                        reportError(accidentPage.getErrors(), httpSchema, domain, queue);
                         System.out.println(accidentPage.getErrors());
+
+                        ErrorDetails errorDetails = new ErrorDetails();
+                        errorDetails.setMessage(accidentPage.getErrors());
+                        automationResponse.setErrorDetails(errorDetails);
                     }
                 }
             }
@@ -538,8 +564,11 @@ public class Automation {
                     accidentPage.clickSaveConviction();
 
                     if (accidentPage.hasErrors()) {
-                        reportError(accidentPage.getErrors(), httpSchema, domain, queue);
                         System.out.println(accidentPage.getErrors());
+
+                        ErrorDetails errorDetails = new ErrorDetails();
+                        errorDetails.setMessage(accidentPage.getErrors());
+                        automationResponse.setErrorDetails(errorDetails);
                     }
                 }
             }
@@ -548,8 +577,11 @@ public class Automation {
             VehiclePage vehiclePage = accidentPage.clickVehiclePage();
 
             if(accidentPage.hasErrors()){
-                reportError(accidentPage.getErrors(), httpSchema, domain, queue);
                 System.out.println(accidentPage.getErrors());
+
+                ErrorDetails errorDetails = new ErrorDetails();
+                errorDetails.setMessage(accidentPage.getErrors());
+                automationResponse.setErrorDetails(errorDetails);
             }
 
             /**
@@ -575,8 +607,11 @@ public class Automation {
             Thread.sleep(2000);
 
             if(vehiclePage.hasErrors()){
-                reportError(vehiclePage.getErrors(), httpSchema, domain, queue);
                 System.out.println(vehiclePage.getErrors());
+
+                ErrorDetails errorDetails = new ErrorDetails();
+                errorDetails.setMessage(vehiclePage.getErrors());
+                automationResponse.setErrorDetails(errorDetails);
             }
             vehiclePage.setVehicleOvernightGaraging(vehicleOvernightGaraging);
 
@@ -600,8 +635,11 @@ public class Automation {
             Thread.sleep(1000);
 
             if(vehiclePage.hasErrors()){
-                reportError(vehiclePage.getErrors(), httpSchema, domain, queue);
                 System.out.println(vehiclePage.getErrors());
+
+                ErrorDetails errorDetails = new ErrorDetails();
+                errorDetails.setMessage(vehiclePage.getErrors());
+                automationResponse.setErrorDetails(errorDetails);
             }
 
             InsurancePage insurancePage = vehiclePage.clickInsurancePage();
@@ -628,8 +666,11 @@ public class Automation {
             QuotePage quotePage = insurancePage.clickQuotePage();
 
             if(insurancePage.hasErrors()){
-                reportError(insurancePage.getErrors(), httpSchema, domain, queue);
                 System.out.println(insurancePage.getErrors());
+
+                ErrorDetails errorDetails = new ErrorDetails();
+                errorDetails.setMessage(insurancePage.getErrors());
+                automationResponse.setErrorDetails(errorDetails);
             }
 
 
@@ -666,18 +707,23 @@ public class Automation {
                 quoteDetails.setTotal(quotePage.getTotalClientPayable().replace("£ ", ""));
                 quoteDetails.setQuote(queue);
 
-                return quoteDetails;
-
+                automationResponse.setQuoteDetails(quoteDetails);
             }else{
-                reportError(quotePage.getErrors(), httpSchema, domain, queue);
                 System.out.println(quotePage.getErrors());
+
+                ErrorDetails errorDetails = new ErrorDetails();
+                errorDetails.setMessage(quotePage.getErrors());
+                automationResponse.setErrorDetails(errorDetails);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            reportError(e.getMessage(), httpSchema, domain, queue);
             System.err.println("exception thrown: " + e.getMessage());
+
+            ErrorDetails errorDetails = new ErrorDetails();
+            errorDetails.setMessage(e.getMessage());
+            automationResponse.setErrorDetails(errorDetails);
         }
-        return null;
+        return automationResponse;
     }
 
     private Map<String, String> dateSplit(String date) {
@@ -834,39 +880,39 @@ public class Automation {
         }
     }*/
 
-    protected static void reportError(String error, String schema, String domain, String queue_id) {
-        try {
-            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-            //urlParameters.add(new BasicNameValuePair("error", error));
-            urlParameters.add(new BasicNameValuePair("error", URLEncoder.encode(error, StandardCharsets.UTF_8)));
-            urlParameters.add(new BasicNameValuePair("quote", queue_id));
-
-            String GET_URL = compileGetUrl(schema, domain, POST_PATH, urlParameters);
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpGet httpGet = new HttpGet(GET_URL);
-            httpGet.addHeader("User-Agent", USER_AGENT);
-            CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
-
-            System.out.println("GET Response Status:: " + httpResponse.getStatusLine().getStatusCode());
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    httpResponse.getEntity().getContent()));
-
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = reader.readLine()) != null) {
-                response.append(inputLine);
-            }
-            reader.close();
-
-            // print result
-            System.out.println(response.toString());
-            httpClient.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+//    protected static void reportError(String error, String schema, String domain, String queue_id) {
+//        try {
+//            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+//            //urlParameters.add(new BasicNameValuePair("error", error));
+//            urlParameters.add(new BasicNameValuePair("error", URLEncoder.encode(error, StandardCharsets.UTF_8)));
+//            urlParameters.add(new BasicNameValuePair("quote", queue_id));
+//
+//            String GET_URL = compileGetUrl(schema, domain, POST_PATH, urlParameters);
+//            CloseableHttpClient httpClient = HttpClients.createDefault();
+//            HttpGet httpGet = new HttpGet(GET_URL);
+//            httpGet.addHeader("User-Agent", USER_AGENT);
+//            CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
+//
+//            System.out.println("GET Response Status:: " + httpResponse.getStatusLine().getStatusCode());
+//
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(
+//                    httpResponse.getEntity().getContent()));
+//
+//            String inputLine;
+//            StringBuffer response = new StringBuffer();
+//
+//            while ((inputLine = reader.readLine()) != null) {
+//                response.append(inputLine);
+//            }
+//            reader.close();
+//
+//            // print result
+//            System.out.println(response.toString());
+//            httpClient.close();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
     protected static void reportResults(List<NameValuePair> results, String schema, String domain) throws IOException {
 
