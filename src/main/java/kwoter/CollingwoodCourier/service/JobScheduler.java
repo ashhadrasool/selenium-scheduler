@@ -32,7 +32,7 @@ public class JobScheduler {
 
             List<QuotesQueue> inProgressQuotes = pendingQuotes.stream().map((quotesQueue) -> {
                 logger.info("Marking jobs as in progress");
-//                quotesQueue.setStatus(1); //todo enable
+                quotesQueue.setStatus(1); //todo enable
                 return quotesQueue;
             }).collect(Collectors.toList());
 
@@ -47,10 +47,10 @@ public class JobScheduler {
                         automation.setUp();
                         logger.info("Running Automation for Request Id: "+quote.getRequestId());
                         String response = automation.runAutomation(quote.getRequest());
-//                        quote.setResponse(response); //todo enable
-//                        quote.setStatus(2); // Set to success //todo enable
+                        quote.setResponse(response); //todo enable
+                        quote.setStatus(2); // Set to success //todo enable
                     } catch (Exception e) {
-//                        quote.setStatus(3); // Set to failed  //todo enable
+                        quote.setStatus(3); // Set to failed  //todo enable
                     }finally {
                         logger.info("Completed Request Id: " +quote.getRequestId());
                         quotesQueueRepository.save(quote);

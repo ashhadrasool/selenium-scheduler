@@ -141,10 +141,11 @@ public class Automation {
             proposerPage.setEmail(email);
             proposerPage.setOccupation(occupation.toUpperCase());
             proposerPage.setEmploymentStatus(employmentStatus);
-//            proposerPage.setSecondaryOccupation(secondaryOccupation); //todo enable
+            proposerPage.setSecondaryOccupation(secondaryOccupation); //todo enable
             proposerPage.setDOBday(this.dateSplit(DOB).get("day"));
             proposerPage.setDOBmonth(this.dateSplit(DOB).get("month"));
             proposerPage.setDOByear(this.dateSplit(DOB).get("year"));
+            Thread.sleep(1000); //todo: remove and fix later
             proposerPage.setTitle(title.toUpperCase());
             proposerPage.setFirstName(firstName);
             proposerPage.setLastName(lastName);
@@ -592,7 +593,7 @@ public class Automation {
             vehiclePage.setVehicleRegular(vehicleRegular);
             vehiclePage.setVehicleHaveSignage(vehicleHaveSignage);
             vehiclePage.setVehicleMaxValue(vehicleMaxValue);
-//            vehiclePage.setVehiclevisitSites(vehicleVisitSites); //todo: ebable
+            vehiclePage.setVehiclevisitSites(vehicleVisitSites); //todo: enable
             vehiclePage.setVehicleOutsideUK(vehicleOutsideUK);
 
             Thread.sleep(1000);
@@ -612,7 +613,7 @@ public class Automation {
             String insuranceProfNcd = insuranceData.getInsuranceProfNCD();
             String insuranceDateNcd = insuranceData.getInsuranceDateNCD();
 
-//            insurancePage.setInsuranceInsurer(insuranceInsurer); //todo: enable
+            insurancePage.setInsuranceInsurer(insuranceInsurer); //todo: enable
             insurancePage.setInsurancePolicyNo(insurancePolicyNo);
             insurancePage.setInsuranceRegistrationNo(insuranceRegistrationNo);
             insurancePage.setInsuranceExpiryDater(insuranceExpiryDate);
@@ -655,18 +656,17 @@ public class Automation {
                 quotePage.clickCalculateSave();
                 quotePage.clickAlert();
 
-                List<NameValuePair> results = new ArrayList<NameValuePair>();
-                results.add(new BasicNameValuePair("CustomerID", quotePage.getCustomerIDinfo()));
-                results.add(new BasicNameValuePair("quoteNumber", quotePage.getQuoteRef()));
-                results.add(new BasicNameValuePair("broker_commission", quotePage.getBrokerageIncluded()));
-                results.add(new BasicNameValuePair("premium", quotePage.getPremium()));
-                results.add(new BasicNameValuePair("IPT", quotePage.getIpt()));
-                results.add(new BasicNameValuePair("total", quotePage.getTotalClientPayable()));
-                results.add(new BasicNameValuePair("quote", queue));
+                QuoteDetails quoteDetails = new QuoteDetails();
+                quoteDetails.setCustomerID(quotePage.getCustomerIDinfo());
+                quoteDetails.setQuoteNumber(quotePage.getQuoteRef());
+                quoteDetails.setBrokerCommission(quotePage.getBrokerageIncluded());
+                quoteDetails.setPremium(quotePage.getPremium());
+                quoteDetails.setIpt(quotePage.getIpt());
+                quoteDetails.setTotal(quotePage.getTotalClientPayable());
+                quoteDetails.setQuote(queue);
 
-                reportResults(results, httpSchema, domain);
+                response = objectMapper.writeValueAsString(quoteDetails);
 
-                System.out.println(results);
             }else{
                 reportError(quotePage.getErrors(), httpSchema, domain, queue);
                 System.out.println(quotePage.getErrors());

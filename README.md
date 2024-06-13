@@ -74,6 +74,11 @@ source set_env_variables.sh
 
 The command to run the java service
 ```
-java -jar CollingwoodCourier-0.0.1-SNAPSHOT.jar
+nohup java -jar CollingwoodCourier-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
+```
+
+To see the logs:
+```
+cat output.log
 ```
 
