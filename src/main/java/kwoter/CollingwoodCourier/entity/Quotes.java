@@ -21,7 +21,7 @@ public class Quotes {
     @Column(name = "insurer_id", nullable = false)
     private Integer insurerId;
 
-    @Column(name = "quote_id", length = 255, columnDefinition = "varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    @Column(name = "quote_id", length = 255)
     private String quoteId;
 
     @Column(name = "request_id")
@@ -34,39 +34,39 @@ public class Quotes {
     private Byte origin;
 
     @Column(name = "status", nullable = false)
-    private Integer status;
+    private Short status;
 
-    @Column(name = "premium", precision = 10, scale = 2)
+    @Column(name = "premium")
     private Double premium;
 
-    @Column(name = "ipt", precision = 10, scale = 2, nullable = false, columnDefinition = "double(10,2) DEFAULT '0.00'")
+    @Column(name = "ipt", nullable = false)
     private Double ipt;
 
-    @Column(name = "fee_amount", precision = 10, scale = 2)
+    @Column(name = "fee_amount")
     private Double feeAmount;
 
-    @Column(name = "deposit", precision = 10, scale = 2)
+    @Column(name = "deposit")
     private Double deposit;
 
-    @Column(name = "interest_rate_percent", precision = 10, scale = 2)
+    @Column(name = "interest_rate_percent")
     private Double interestRatePercent;
 
     @Column(name = "instalments")
     private Integer instalments;
 
-    @Column(name = "excess", precision = 10, scale = 2)
+    @Column(name = "excess")
     private Double excess;
 
-    @Column(name = "error", length = 255, columnDefinition = "varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    @Column(name = "error", length = 255)
     private String error;
 
-    @Column(name = "note", length = 255, columnDefinition = "varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    @Column(name = "note", length = 255)
     private String note;
 
-    @Column(name = "income", precision = 10, scale = 2)
+    @Column(name = "income")
     private Double income;
 
-    @Column(name = "response", columnDefinition = "text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    @Column(name = "response")
     private String response;
 
     @Column(name = "created_by", nullable = false)
@@ -90,6 +90,7 @@ public class Quotes {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedAt;
 
+    // Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -154,11 +155,11 @@ public class Quotes {
         this.origin = origin;
     }
 
-    public Integer getStatus() {
+    public Short getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Short status) {
         this.status = status;
     }
 

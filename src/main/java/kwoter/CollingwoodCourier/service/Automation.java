@@ -585,6 +585,7 @@ public class Automation {
             vehiclePage.setVehicleWorkRadius(vehicleWorkRadius);
             vehiclePage.setVehicleHazardous(vehicleHazardous);
 
+            Thread.sleep(1000); // todo remove
 
             vehiclePage.setVehicleValue(vehicleValue);
             vehiclePage.setVehicleModifieds(vehicleModified);

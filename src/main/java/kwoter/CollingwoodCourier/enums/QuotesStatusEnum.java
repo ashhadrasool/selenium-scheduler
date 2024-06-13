@@ -6,13 +6,13 @@ public enum QuotesStatusEnum {
     FAIL(2);
 
 
-    private final int code;
+    private final Integer code;
 
     QuotesStatusEnum(int code) {
         this.code = code;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 

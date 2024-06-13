@@ -76,7 +76,7 @@ public class JobScheduler {
 
                         requestLogData.setOutput(jsonOutput);
 
-                        quotes.setStatus(QuotesStatusEnum.SUCCESS.getCode());
+                        quotes.setStatus(QuotesStatusEnum.SUCCESS.getCode().shortValue());
                         quotes.setPremium(Double.parseDouble(quoteDetails.getPremium()));
                         quotes.setIpt(Double.parseDouble(quoteDetails.getIpt()));
                         quotes.setFeeAmount(Double.parseDouble(quoteDetails.getBrokerCommission()));
@@ -87,10 +87,10 @@ public class JobScheduler {
 
                     } catch (Exception e) {
                         quotesQueue.setStatus(QuotesQueueStatusEnum.FAIL.getCode()); // Set to failed  //todo enable
-                        quotes.setStatus(QuotesStatusEnum.FAIL.getCode());
+                        quotes.setStatus(QuotesStatusEnum.FAIL.getCode().shortValue());
                         requestLogData.setErrorMessage(e.getMessage());
                     }finally {
-                        
+
                         quotesQueueRepository.save(quotesQueue);
                         quotesRepository.save(quotes);
                         requestLogDataRepository.save(requestLogData);
