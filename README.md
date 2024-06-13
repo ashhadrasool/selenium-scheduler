@@ -81,4 +81,18 @@ To see the logs:
 ```
 cat output.log
 ```
+To tail the log:
+```
+tail -f output.log
+```
+To see the usage, first get the pid then run the 2nd command:
+```
+ps aux | grep 'java'
+ps -p PROCESS_PID -o %cpu,%mem,cmd
+```
+
+To kill the process
+```
+kill -9 PROCESS_PID
+```
 

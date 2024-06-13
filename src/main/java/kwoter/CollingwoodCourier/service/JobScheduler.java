@@ -1,7 +1,13 @@
 package kwoter.CollingwoodCourier.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kwoter.CollingwoodCourier.entity.Quotes;
 import kwoter.CollingwoodCourier.entity.QuotesQueue;
+import kwoter.CollingwoodCourier.enums.QuotesQueueStatusEnum;
+import kwoter.CollingwoodCourier.enums.QuotesStatusEnum;
+import kwoter.CollingwoodCourier.model.QuoteDetails;
 import kwoter.CollingwoodCourier.repo.QuotesQueueRepository;
+import kwoter.CollingwoodCourier.repo.QuotesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +20,8 @@ import java.util.stream.Collectors;
 @Component
 public class JobScheduler {
 
+    @Autowired
+    QuotesRepository quotesRepository;
     @Autowired
     QuotesQueueRepository quotesQueueRepository;
 
@@ -32,28 +40,40 @@ public class JobScheduler {
 
             List<QuotesQueue> inProgressQuotes = pendingQuotes.stream().map((quotesQueue) -> {
                 logger.info("Marking jobs as in progress");
-                quotesQueue.setStatus(1); //todo enable
+                quotesQueue.setStatus(QuotesQueueStatusEnum.PROCESSING.getCode()); //todo enable
                 return quotesQueue;
             }).collect(Collectors.toList());
 
             inProgressQuotes = quotesQueueRepository.saveAll(inProgressQuotes);
 
-            for (QuotesQueue quote : inProgressQuotes) {
+            for (QuotesQueue quotesQueue : inProgressQuotes) {
                 threadPoolTaskExecutor.submit(() -> {
-                    System.out.println("Running Request Id: " +quote.getRequestId());
+                    Quotes quotes = quotesRepository.findByRequestId(quotesQueue.getRequestId()).orElse(null);
+                    System.out.println("Running Request Id: " +quotesQueue.getRequestId());
                     Automation automation = new Automation();
                     try {
-                        logger.info("Setting up browser for Request Id: "+quote.getRequestId());
+                        logger.info("Setting up browser for Request Id: "+quotesQueue.getRequestId());
                         automation.setUp();
-                        logger.info("Running Automation for Request Id: "+quote.getRequestId());
-                        String response = automation.runAutomation(quote.getRequest());
-                        quote.setResponse(response); //todo enable
-                        quote.setStatus(2); // Set to success //todo enable
+                        logger.info("Running Automation for Request Id: "+quotesQueue.getRequestId());
+                        QuoteDetails quoteDetails = automation.runAutomation(quotesQueue.getRequest());
+
+                        quotesQueue.setResponse((new ObjectMapper()).writeValueAsString(quoteDetails)); //todo enable
+                        quotesQueue.setStatus(QuotesQueueStatusEnum.SUCCESS.getCode()); // Set to success //todo enable
+
+                        quotes.setStatus(QuotesStatusEnum.SUCCESS.getCode());
+                        quotes.setPremium(Double.parseDouble(quoteDetails.getPremium()));
+                        quotes.setIpt(Double.parseDouble(quoteDetails.getIpt()));
+                        quotes.setFeeAmount(Double.parseDouble(quoteDetails.getBrokerCommission()));
+                        quotes.setExcess(Double.parseDouble(quoteDetails.getTotal()));
+                        quotes.setQuoteId(quoteDetails.getQuoteNumber());
+                        
                     } catch (Exception e) {
-                        quote.setStatus(3); // Set to failed  //todo enable
+                        quotesQueue.setStatus(QuotesQueueStatusEnum.FAIL.getCode()); // Set to failed  //todo enable
+                        quotes.setStatus(QuotesStatusEnum.FAIL.getCode());
                     }finally {
-                        logger.info("Completed Request Id: " +quote.getRequestId());
-                        quotesQueueRepository.save(quote);
+                        quotesQueueRepository.save(quotesQueue);
+                        quotesRepository.save(quotes);
+                        logger.info("Completed Request Id: " +quotesQueue.getRequestId());
                         automation.tearDown();
                     }
                 });

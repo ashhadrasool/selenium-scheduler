@@ -40,7 +40,7 @@ public class Automation {
     private String browserPath;
 
     private static final Logger logger = LoggerFactory.getLogger(Automation.class);
-    public String runAutomation(String json) {
+    public QuoteDetails runAutomation(String json) {
 
         String response = "{}";
 
@@ -659,13 +659,13 @@ public class Automation {
                 QuoteDetails quoteDetails = new QuoteDetails();
                 quoteDetails.setCustomerID(quotePage.getCustomerIDinfo());
                 quoteDetails.setQuoteNumber(quotePage.getQuoteRef());
-                quoteDetails.setBrokerCommission(quotePage.getBrokerageIncluded());
-                quoteDetails.setPremium(quotePage.getPremium());
-                quoteDetails.setIpt(quotePage.getIpt());
-                quoteDetails.setTotal(quotePage.getTotalClientPayable());
+                quoteDetails.setBrokerCommission(quotePage.getBrokerageIncluded().replace("£ ", ""));
+                quoteDetails.setPremium(quotePage.getPremium().replace("£ ", ""));
+                quoteDetails.setIpt(quotePage.getIpt().replace("£ ", ""));
+                quoteDetails.setTotal(quotePage.getTotalClientPayable().replace("£ ", ""));
                 quoteDetails.setQuote(queue);
 
-                response = objectMapper.writeValueAsString(quoteDetails);
+                return quoteDetails;
 
             }else{
                 reportError(quotePage.getErrors(), httpSchema, domain, queue);
@@ -676,7 +676,7 @@ public class Automation {
             reportError(e.getMessage(), httpSchema, domain, queue);
             System.err.println("exception thrown: " + e.getMessage());
         }
-        return response;
+        return null;
     }
 
     private Map<String, String> dateSplit(String date) {
